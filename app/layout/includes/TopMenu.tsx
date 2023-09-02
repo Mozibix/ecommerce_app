@@ -24,7 +24,7 @@ export default function TopMenu() {
 
               <div
                 id="auth_drop_down"
-                className="absolute bg-white w-[200px] text-[#333] z-40 top-[20px] left-0 border shadow-lg"
+                className="hidden absolute bg-white w-[200px] text-[#333] z-40 top-[20px] left-0 border shadow-lg"
               >
                 <div className="flex item-center justify-start gap-1 p-3">
                   <img width={50} src="https://picsum.photos/200/" alt="demo" />
