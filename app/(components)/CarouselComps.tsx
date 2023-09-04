@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -15,13 +16,28 @@ export default function CarouselComp() {
           showThumbs={false}
         >
           <div>
-            <img src="/images/banner/1.png" alt="banner" />
+            <Image
+              width={500}
+              height={500}
+              src="/images/banner/1.png"
+              alt="banner"
+            />
           </div>
           <div>
-            <img src="/images/banner/2.png" alt="banner" />
+            <Image
+              width={500}
+              height={500}
+              src="/images/banner/2.png"
+              alt="banner"
+            />
           </div>
           <div>
-            <img src="/images/banner/3.png" alt="banner" />
+            <Image
+              width={500}
+              height={500}
+              src="/images/banner/3.png"
+              alt="banner"
+            />
           </div>
         </Carousel>
       </div>
