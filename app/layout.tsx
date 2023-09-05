@@ -1,4 +1,5 @@
 import "./globals.css";
+import UserProvider from "./context/user";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 import type { Metadata } from "next";
@@ -17,7 +18,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ToastContainer />
-        {children}
+
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );
