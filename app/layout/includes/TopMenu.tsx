@@ -3,8 +3,36 @@
 import Link from "next/link";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
+import { useUser } from "@/app/context/user";
+import { useState } from "react";
 
 export default function TopMenu() {
+  const user = useUser();
+  const [isMenu, setIsMenu] = useState(false);
+
+  const isLoggedIn = () => {
+    if (user && user?.id) {
+      return (
+        <button
+          onClick={() => (!isMenu ? setIsMenu(true) : setIsMenu(false))}
+          className="flex items-center gap-2 hover:underline cursor-pointer"
+        >
+          <div>Hi, {user?.name}</div>
+          <BsChevronDown />
+        </button>
+      );
+    }
+
+    return (
+      <Link
+        href="/auth"
+        className="flex items-center gap-2 hover:underline cursor-pointer"
+      >
+        <div>Login</div>
+      </Link>
+    );
+  };
+
   return (
     <>
       <div id="top_menu" className="border-b">
@@ -14,21 +42,17 @@ export default function TopMenu() {
             className="flex item-center px-2 h-8 text-[11px] text-[#333]"
           >
             <li className="relative px-3">
-              <Link
-                href="/auth"
-                className="flex item-center gap-2 hover:underline cursor-pointer"
-              >
-                <div>Login</div>
-                <BsChevronDown />
-              </Link>
+              {isLoggedIn()}
 
               <div
                 id="auth_drop_down"
-                className="hidden absolute bg-white w-[200px] text-[#333] z-40 top-[20px] left-0 border shadow-lg"
+                className={`absolute bg-white w-[200px] text-[#333333] z-40 top-[20px] left-0 border shadow-lg  ${
+                  isMenu ? "visible" : "hidden"
+                }`}
               >
                 <div className="flex item-center justify-start gap-1 p-3">
-                  <img width={50} src="https://picsum.photos/200/" alt="demo" />
-                  <p className="font-bold text-[13px]">John Weeks</p>
+                  <img width={50} src={user?.picture} alt="profile-picture" />
+                  <p className="font-bold text-[13px]">{user?.name}</p>
                 </div>
 
                 <div className="border-b" />
@@ -36,7 +60,13 @@ export default function TopMenu() {
                   <li className="text-[11px] py-2 px-4 hover:underline text-blue-500 hover:text-blue-600 cursor-pointer">
                     <Link href="/orders">My orders</Link>
                   </li>
-                  <li className="text-[11px] py-2 px-4 hover:underline text-blue-500 hover:text-blue-600 cursor-pointer">
+                  <li
+                    onClick={() => {
+                      user.signOut();
+                      setIsMenu(false);
+                    }}
+                    className="text-[11px] py-2 px-4 hover:underline text-blue-500 hover:text-blue-600 cursor-pointer"
+                  >
                     Sign out
                   </li>
                 </ul>
