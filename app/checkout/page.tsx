@@ -49,7 +49,7 @@ export default function Checkout() {
               <div className="p-4">
                 <div className="flex items-baseline justify-between text-sm mb-1">
                   <div>Items (4)</div>
-                  <div>£12.49</div>
+                  <div>$12.49</div>
                 </div>
                 <div className="flex items-center justify-between mb-4 text-sm">
                   <div>Shipping:</div>
@@ -60,7 +60,7 @@ export default function Checkout() {
 
                 <div className="flex items-center justify-between my-4">
                   <div className="font-semibold">Order total</div>
-                  <div className="text-2xl font-semibold">£12.99</div>
+                  <div className="text-2xl font-semibold">$12.99</div>
                 </div>
 
                 <form>
