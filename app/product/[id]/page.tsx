@@ -1,10 +1,27 @@
 "use client";
 
+import React from "react";
 import SimilarProducts from "@/app/(components)/SimilarProducts";
 import MainLayout from "@/app/layout/MainLayout";
+import { useCart } from "@/app/context/cart";
+import { toast } from "react-toastify";
 
-export default function Product({ param }) {
-  const product = {
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  url: string;
+  price: number;
+}
+
+interface ProductProps {
+  param: any;
+}
+
+export default function Product({ param }: ProductProps) {
+  const cart = useCart();
+
+  const product: Product = {
     id: 1,
     title: "Brown Leather bag",
     description:
@@ -12,13 +29,18 @@ export default function Product({ param }) {
     url: "https://picsum.photos/id/7",
     price: 2500,
   };
+
   return (
     <>
       <MainLayout>
         <div className="max-w-[1200px] mx-auto">
           <div className="flex px-4 py-10">
             {product?.url ? (
-              <img className="w-[40%] rounded-lg" src={product?.url + "/280"} />
+              <img
+                className="w-[40%] rounded-lg"
+                src={product?.url + "/280"}
+                alt={product?.title}
+              />
             ) : (
               <div className="w-[40%]"></div>
             )}
@@ -50,8 +72,26 @@ export default function Product({ param }) {
                       </div>
                     ) : null}
                   </div>
-                  <button className="bg-[#3498C9] text-white py-2 px-20 rounded-full cursor-pointer">
-                    Add to cart
+                  <button
+                    onClick={() => {
+                      if (cart.isItemAdded) {
+                        cart.removeFromCart(product);
+                        toast.info("Removed from cart", { autoClose: 3000 });
+                      } else {
+                        cart.addToCart(product);
+                        toast.success("Added to cart", { autoClose: 3000 });
+                      }
+                    }}
+                    className={`
+                      text-white py-2 px-20 rounded-full cursor-pointer 
+                      ${
+                        cart.isItemAdded
+                          ? "bg-[#e9a321] hover:bg-[#bf851a]"
+                          : "bg-[#3498C9] hover:bg-[#0054A0]"
+                      }
+                    `}
+                  >
+                    {cart.isItemAdded ? "Remove From Cart" : "Add To Cart"}
                   </button>
                 </div>
               </div>
