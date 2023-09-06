@@ -16,7 +16,7 @@ interface Product {
 }
 
 interface ProductProps {
-  params: any;
+  params: { id: number };
 }
 
 export default function Product({ params }: ProductProps) {
@@ -29,7 +29,7 @@ export default function Product({ params }: ProductProps) {
     setProduct({} as Product);
 
     const response = await fetch(`/api/product/${params.id}`);
-    const prod = await response.json();
+    const prod: Product = await response.json();
     setProduct(prod);
     cart.isItemAddedToCart(prod);
     UseIsLoading(false);
@@ -37,7 +37,7 @@ export default function Product({ params }: ProductProps) {
 
   useEffect(() => {
     getProduct();
-  }, []);
+  }, [params.id]);
 
   return (
     <>
@@ -47,7 +47,7 @@ export default function Product({ params }: ProductProps) {
             {product?.url ? (
               <img
                 className="w-[40%] rounded-lg"
-                src={product?.url + "/280"}
+                src={`${product?.url}/280`}
                 alt={product?.title}
               />
             ) : (
@@ -84,10 +84,10 @@ export default function Product({ params }: ProductProps) {
                   <button
                     onClick={() => {
                       if (cart.isItemAdded) {
-                        cart.removeFromCart(product);
+                        cart.removeFromCart(product as Product);
                         toast.info("Removed from cart", { autoClose: 3000 });
                       } else {
-                        cart.addToCart(product);
+                        cart.addToCart(product as Product);
                         toast.success("Added to cart", { autoClose: 3000 });
                       }
                     }}
