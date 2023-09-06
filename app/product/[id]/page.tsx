@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SimilarProducts from "@/app/(components)/SimilarProducts";
 import MainLayout from "@/app/layout/MainLayout";
 import { useCart } from "@/app/context/cart";
 import { toast } from "react-toastify";
+import UseIsLoading from "@/app/hooks/useIsLoading";
 
 interface Product {
   id: number;
@@ -15,20 +16,28 @@ interface Product {
 }
 
 interface ProductProps {
-  param: any;
+  params: any;
 }
 
-export default function Product({ param }: ProductProps) {
+export default function Product({ params }: ProductProps) {
   const cart = useCart();
 
-  const product: Product = {
-    id: 1,
-    title: "Brown Leather bag",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet sequi totam quod! onsectetur adipisicing elit. Amet sequi totam quod!",
-    url: "https://picsum.photos/id/7",
-    price: 2500,
+  const [product, setProduct] = useState<Product | {}>({});
+
+  const getProduct = async () => {
+    UseIsLoading(true);
+    setProduct({} as Product);
+
+    const response = await fetch(`/api/product/${params.id}`);
+    const prod = await response.json();
+    setProduct(prod);
+    cart.isItemAddedToCart(prod);
+    UseIsLoading(false);
   };
+
+  useEffect(() => {
+    getProduct();
+  }, []);
 
   return (
     <>
