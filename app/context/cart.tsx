@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { createContext, useState, useContext, ReactNode } from "react";
 
 interface Product {
-  id: string;
+  id: number;
   name: string;
   price: number;
 }
