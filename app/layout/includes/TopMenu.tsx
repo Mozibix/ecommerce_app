@@ -5,9 +5,13 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { useUser } from "@/app/context/user";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCart } from "@/app/context/cart";
 
 export default function TopMenu() {
+  const router = useRouter();
   const user = useUser();
+  const cart = useCart();
   const [isMenu, setIsMenu] = useState(false);
 
   const isLoggedIn = () => {
@@ -82,23 +86,32 @@ export default function TopMenu() {
             id="top_menu_right"
             className="flex items-center px-2 h-8 text-[11px] text=[#333]"
           >
-            <li className="flex items-center gap-2 px-3 hover:underline cursor-pointer">
+            <li
+              onClick={() => router.push("/address")}
+              className="flex items-center gap-2 px-3 hover:underline cursor-pointer"
+            >
               <img width={32} src="/images/uk.png" alt="uk" />
               ship to
             </li>
 
-            <Link href="/cart">
-              <li className="px-3 hover:underline cursor-pointer">
-                <div className="relative">
-                  <AiOutlineShoppingCart size={22} />
-                  <div className="absolute text-[10px] -top-[5px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
-                    <div className="flex items-center justify-center -mt-[1px]">
-                      3
-                    </div>
+            <li className="px-3 hover:underline cursor-pointer">
+              <div className="relative" onClick={() => router.push("/cart")}>
+                <AiOutlineShoppingCart size={22} />
+                <div className="absolute text-[10px] -top-[5px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
+                  <div className="flex items-center justify-center -mt-[1px]">
+                    {cart.cartCount() > 0 ? (
+                      <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
+                        <div className=" flex items-center justify-center -mt-[1px]">
+                          {cart.cartCount()}
+                        </div>
+                      </div>
+                    ) : (
+                      <>0</>
+                    )}
                   </div>
                 </div>
-              </li>
-            </Link>
+              </div>
+            </li>
           </ul>
         </div>
       </div>
