@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "../context/cart";
 import UseIsLoading from "../hooks/useIsLoading";
 import ClientOnly from "../(components)/ClientOnly";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 export default function Cart() {
   const router = useRouter();
@@ -35,9 +36,22 @@ export default function Cart() {
           <div className="relative flex items-baseline justify-between gap-2">
             <ClientOnly>
               <div className="w-[65%]">
-                {cart?.getCart()?.map((product) => {
-                  return <CartItem key={product.id} product={product} />;
-                })}
+                {cart?.getCart()?.length > 0 ? (
+                  cart
+                    ?.getCart()
+                    ?.map((product) => (
+                      <CartItem key={product.id} product={product} />
+                    ))
+                ) : (
+                  <div>
+                    <p className="text-center text-lg font-medium flex items-center justify-center">
+                      Empty
+                      <span>
+                        <AiOutlineShoppingCart size={22} />
+                      </span>
+                    </p>
+                  </div>
+                )}
               </div>
             </ClientOnly>
             <div
