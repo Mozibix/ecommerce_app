@@ -38,7 +38,7 @@ const CartItem: React.FC<IProps> = ({ product }) => {
             </div>
           </div>
 
-          <div className="font-semibold mt-2">NEW</div>
+          <div className="font-semibold text-blue-500 mt-2">NEW</div>
 
           <div className="text-sm mt-2">
             {product?.description.substring(0, 150)}...
