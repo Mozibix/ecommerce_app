@@ -87,16 +87,18 @@ export default function TopMenu() {
               ship to
             </li>
 
-            <li className="px-3 hover:underline cursor-pointer">
-              <div className="relative">
-                <AiOutlineShoppingCart size={22} />
-                <div className="absolute text-[10px] -top-[5px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
-                  <div className="flex items-center justify-center -mt-[1px]">
-                    3
+            <Link href="/cart">
+              <li className="px-3 hover:underline cursor-pointer">
+                <div className="relative">
+                  <AiOutlineShoppingCart size={22} />
+                  <div className="absolute text-[10px] -top-[5px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
+                    <div className="flex items-center justify-center -mt-[1px]">
+                      3
+                    </div>
                   </div>
                 </div>
-              </div>
-            </li>
+              </li>
+            </Link>
           </ul>
         </div>
       </div>
