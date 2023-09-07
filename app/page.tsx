@@ -12,7 +12,6 @@ interface Product {
 
 const Home = () => {
   const [products, setProducts] = useState<Product[] | []>([]);
-  console.log("products", products);
 
   const getProducts = async () => {
     UseIsLoading(true);
