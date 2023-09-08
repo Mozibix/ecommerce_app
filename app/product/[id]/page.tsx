@@ -5,7 +5,7 @@ import SimilarProducts from "@/app/(components)/SimilarProducts";
 import MainLayout from "@/app/layout/MainLayout";
 import { useCart } from "@/app/context/cart";
 import { toast } from "react-toastify";
-import UseIsLoading from "@/app/hooks/useIsLoading";
+import UseIsLoading from "@/app/hooks/UseIsLoading";
 
 interface Product {
   id: number;

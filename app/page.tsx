@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import CarouselComp from "./(components)/CarouselComps";
 import Product from "./(components)/Products";
-import UseIsLoading from "./hooks/useIsLoading";
+import UseIsLoading from "./hooks/UseIsLoading";
 import MainLayout from "./layout/MainLayout";
 
 interface Product {
