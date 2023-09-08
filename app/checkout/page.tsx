@@ -3,37 +3,43 @@
 import Link from "next/link";
 import { useUser } from "@/app/context/user";
 import { useCart } from "../context/cart";
-import {
-  JSXElementConstructor,
-  PromiseLikeOfReactNode,
-  ReactElement,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { ToastContentProps, toast } from "react-toastify";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { loadStripe } from "@stripe/stripe-js";
+import { Stripe, loadStripe } from "@stripe/stripe-js";
 import UseIsLoading from "../hooks/UseIsLoading";
 import UseUserAddress from "../hooks/UseUserAddress";
 import ClientOnly from "../(components)/ClientOnly";
 import MainLayout from "../layout/MainLayout";
 import CheckOutItem from "../(components)/CheckOutItem";
 
+interface AddressDetails {
+  name: string;
+  address: string;
+  zipcode: string;
+  city: string;
+  country: string;
+}
+
 export default function Checkout() {
   const user = useUser();
   const cart = useCart();
   const router = useRouter();
 
-  const stripe = useRef(null);
-  const elements = useRef(null);
-  const card = useRef(null);
-  const clientSecret = useRef(null);
+  const stripe = useRef<Stripe | null>(null);
+  const elements = useRef<Stripe | null>(null);
+  const card = useRef<Stripe | null>(null);
+  const clientSecret = useRef<string | null>(null);
 
-  const [addressDetails, setAddressDetails] = useState({});
-  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
+  const [addressDetails, setAddressDetails] = useState<AddressDetails>({
+    name: "",
+    address: "",
+    zipcode: "",
+    city: "",
+    country: "",
+  });
+  const [isLoadingAddress, setIsLoadingAddress] = useState<boolean>(false);
 
   useEffect(() => {
     if (cart?.cartTotal() <= 0) {
@@ -57,7 +63,7 @@ export default function Checkout() {
 
     getAdddress();
     setTimeout(() => stripeInit(), 300);
-  }, [user]);
+  }, [user, cart, router]);
 
   const stripeInit = async () => {
     stripe.current = await loadStripe(
@@ -86,32 +92,30 @@ export default function Checkout() {
     });
 
     card.current.mount("#card-element");
-    card.current.on(
-      "change",
-      function (event: { empty: boolean; error: { message: string | null } }) {
-        document.querySelector("button").disabled = event.empty;
-        document.querySelector("#card-error").textContent = event.error
-          ? event.error.message
-          : "";
-      }
-    );
+    card.current.on("change", function (event) {
+      document.querySelector("button").disabled = event.empty;
+      document.querySelector("#card-error").textContent = event.error
+        ? event.error.message
+        : "";
+    });
 
     UseIsLoading(false);
   };
 
-  const pay = async (event) => {
+  const pay = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (Object.entries(addressDetails).length == 0) {
+    if (Object.entries(addressDetails).length === 0) {
       showError("Please add a shipping address!");
       return;
     }
 
-    let result = await stripe.current.confirmCardPayment(clientSecret.current, {
-      payment_method: { card: card.current },
-    });
+    let result: PaymentItem | { error: { message: string } } =
+      await stripe.current.confirmCardPayment(clientSecret.current, {
+        payment_method: { card: card.current },
+      });
 
-    if (result.error) {
+    if ("error" in result) {
       showError(result.error.message);
     } else {
       UseIsLoading(true);
@@ -137,7 +141,7 @@ export default function Checkout() {
           return router.push("/success");
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         toast.error("Something went wrong?", { autoClose: 3000 });
       }
 
@@ -145,24 +149,15 @@ export default function Checkout() {
     }
   };
 
-  const showError = (
-    errorMsgText:
-      | string
-      | number
-      | boolean
-      | ReactElement<any, string | JSXElementConstructor<any>>
-      | Iterable<ReactNode>
-      | PromiseLikeOfReactNode
-      | ((props: ToastContentProps<unknown>) => ReactNode)
-      | null
-      | undefined
-  ) => {
+  const showError = (errorMsgText: string) => {
     let errorMsg = document.querySelector("#card-error");
     toast.error(errorMsgText, { autoClose: 3000 });
-    errorMsg.textContent = errorMsgText;
-    setTimeout(() => {
-      errorMsg.textContent = "";
-    }, 3000);
+    if (errorMsg) {
+      errorMsg.textContent = errorMsgText;
+      setTimeout(() => {
+        if (errorMsg) errorMsg.textContent = "";
+      }, 3000);
+    }
   };
 
   return (
@@ -261,7 +256,7 @@ export default function Checkout() {
                 </div>
               </ClientOnly>
               <div className="flex items-center p-4 justify-center gap-2 border-t">
-                <img width={50} src="/images/logo.svg" />
+                <img width={50} src="/images/logo.svg" alt="Logo" />
                 <div className="font-light mb-2 mt-2">MONEY BACK GUARANTEE</div>
               </div>
             </div>
