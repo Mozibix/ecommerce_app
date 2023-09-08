@@ -5,7 +5,7 @@ import SimilarProducts from "../(components)/SimilarProducts";
 import CartItem from "../(components)/CartItem";
 import { useRouter } from "next/navigation";
 import { useCart } from "../context/cart";
-import UseIsLoading from "../hooks/useIsLoading";
+import UseIsLoading from "../hooks/UseIsLoading";
 import ClientOnly from "../(components)/ClientOnly";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 

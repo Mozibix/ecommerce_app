@@ -5,7 +5,7 @@ import { CiDeliveryTruck } from "react-icons/ci";
 import MainLayout from "../layout/MainLayout";
 import { useEffect, useState } from "react";
 import { useUser } from "../context/user";
-import UseIsLoading from "../hooks/useIsLoading";
+import UseIsLoading from "../hooks/UseIsLoading";
 import { toast } from "react-toastify";
 import moment from "moment";
 
