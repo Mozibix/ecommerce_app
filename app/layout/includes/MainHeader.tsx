@@ -1,6 +1,7 @@
 "use client";
 
 import { debounce } from "debounce";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -54,7 +55,12 @@ export default function MainLayout() {
           <div className="flex items-center w-full bg-white">
             <div className="flex lg:justify-start justify-between gap-10 max-w-[1150px] w-full px-3 py-5 mx-auto">
               <Link href="/">
-                <img width="120" src="/images/logo.svg" alt="Logo" />
+                <Image
+                  height={100}
+                  width={120}
+                  src="/images/logo.svg"
+                  alt="Logo"
+                />
               </Link>
 
               <div className="w-full">
